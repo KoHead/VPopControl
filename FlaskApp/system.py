@@ -26,23 +26,11 @@ def delete_mailbox(mailbox_name):
   Prend en parametre le nom d une mailbox et supprime le contenu du repertoire MailDir correspondant
   """
   path_mailbox="/home/dovecot/%s/Maildir/" % (mailbox_name)
-  list = []
-
-  for root, dirs, files in os.walk(path_mailbox, topdown=False):
-    #On supprimes tous les fichiers
-    for name in files:
-      try:
-        os.remove(os.path.join(root, name))
-        list.append(os.path.join(root,name))
-      except:
-        return "impossible de supprimer %s" % (name)
-    #On supprimes tous les repertoires
-    for name in dirs:
-      try:
-        list.append(os.path.join(root,name))
-        os.rmdir(os.path.join(root, name))
-      except:
-        return "impossible de supprimer %s" % (name)
+  try:
+    command="sudo rm -rf %s*" % (path_mailbox)
+    os.system(command)
+  except:
+    return "impossible de supprimer %s" % (name)
 
   return "La boite mail %s a bien ete supprimee" % (mailbox_name)
 
